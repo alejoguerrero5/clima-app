@@ -1,8 +1,8 @@
-import { useState, createContext} from 'react'
+import { useState, createContext } from 'react'
 
 const ClimaContext = createContext()
 
-const ClimaProvider = ({children}) => {
+const ClimaProvider = ({ children }) => {
 
     const [busqueda, setBusqueda] = useState({
         ciudad: '',
@@ -12,15 +12,20 @@ const ClimaProvider = ({children}) => {
     const busquedaDatos = e => {
         setBusqueda({
             ...busqueda,
-            [e.target.name]: e.target,value
+            [e.target.name]: e.target.value
         })
     }
 
-    return(
+    const consultarClima = datos => {
+        console.log (datos)
+    }
+
+    return (
         <ClimaContext.Provider
             value={{
                 busqueda,
-                busquedaDatos
+                busquedaDatos,
+                consultarClima
             }}
         >
             {children}
