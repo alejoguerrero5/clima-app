@@ -1,7 +1,7 @@
 
 import Formulario from './Formulario'
 import Resultado from './Resultado'
-import Loading from './loading'
+import Loading from './Loading'
 import useClima from '../hooks/useClima'
 
 const AppClima = () => {
