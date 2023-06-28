@@ -12,6 +12,8 @@ const ClimaProvider = ({ children }) => {
     });
 
     const [resultado, setResultado] = useState({});
+    const [cargando, setCargando] = useState(false);
+    const [noResultado, setNoResultado] = useState('');
 
     const busquedaDatos = e => {
         setBusqueda({
@@ -21,26 +23,37 @@ const ClimaProvider = ({ children }) => {
     }
 
     const consultarClima = async datos => {
+
+        setCargando(true)
+        setNoResultado('')
+
         try {
-            const {ciudad, pais} = datos
+            const { ciudad, pais } = datos
 
             const appId = import.meta.env.VITE_API_KEY
 
             const url = `http://api.openweathermap.org/geo/1.0/direct?q=${ciudad},${pais}&limit=1&appid=${appId}`
 
-            const {data} = await axios(url)
-            const {lat,lon,local_names} = data[0]
-            const {es} = local_names
+            const { data } = await axios(url)
+            const { lat, lon, local_names } = data[0]
+            const { es } = local_names
 
             const urlClima = `http://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${appId}`
 
             const { data: clima } = await axios(urlClima)
             setResultado(clima)
-            console.log(es)
+
+            
 
         } catch (error) {
-            console.log(error)
+            setNoResultado('No hay resultados')
+            setResultado({})
+        } finally {
+            setCargando(false)
         }
+
+        console.log(noResultado)
+
     }
 
     return (
@@ -50,6 +63,8 @@ const ClimaProvider = ({ children }) => {
                 busquedaDatos,
                 consultarClima,
                 resultado,
+                cargando,
+                noResultado
             }}
         >
             {children}
